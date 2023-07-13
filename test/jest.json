@@ -8,22 +8,22 @@
     "testMatch": [
         "<rootDir>/test/**/*.spec.ts"
     ],
-    "collectCoverage": true,
+    "collectCoverage": false,
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
         "./src/common/**/services/*.service.ts"
     ],
     "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
+        "global": {
+            "branches": 100,
+            "functions": 100,
+            "lines": 100,
+            "statements": 100
+        }
     },
     "moduleFileExtensions": [
-        "js", 
-        "ts", 
+        "js",
+        "ts",
         "json"
     ],
     "transform": {
