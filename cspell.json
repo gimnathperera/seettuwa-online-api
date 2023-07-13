@@ -1,0 +1,28 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "words": [
+        "alphanum",
+        "DIQU",
+        "Kvnwr",
+        "Zgoh",
+        "QUDRX",
+        "MILIS",
+        "ength",
+        "strongpassword",
+        "weakpassword",
+        "apikey",
+        "requestid",
+        "dtos",
+        "blabla"
+    ],
+    "ignorePaths": [
+        "node_modules/**", 
+        "endpoints/**",
+        "*coverage/**",
+        ".husky/**",
+        ".github/**",
+        "dist/**",
+        "logs/**"
+    ]
+}

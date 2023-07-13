@@ -1,0 +1,85 @@
+name: CI
+on:
+  # push:
+  #   branches: 
+  #   - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: baibay
+
+    env:
+      APP_NAME: ${{ github.event.repository.name }}
+      DOCKERFILE: ./scripts/docker/dockerfile.prod
+    
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Get commit
+        id: git
+        run: |
+          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+      
+      - name: Get latest version
+        id: version
+        uses: martinbeentjes/npm-get-version-action@main
+
+      - name: Git
+        run: |
+          echo Branch name is: ${{ github.ref_name }}
+          echo Short sha: ${{ steps.git.outputs.short_sha}}
+          echo Version is: ${{ steps.version.outputs.current-version}}
+
+      - name: Environment
+        run: |
+          echo APP_NAME is: ${{ env.APP_NAME}}
+          echo DOCKERFILE is: ${{ env.DOCKERFILE}}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - uses: docker/setup-buildx-action@v2
+        id: builder
+
+      - uses: docker/setup-buildx-action@v2
+        id: main
+
+      - name: Builder name
+        run: echo ${{ steps.builder.outputs.name }}
+
+      - name: Main builder name
+        run: echo ${{ steps.main.outputs.name }}
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build against builder
+        uses: docker/build-push-action@v4
+        with:
+          builder: ${{ steps.builder.outputs.name }}
+          file: ${{ env.DOCKERFILE }}
+          target: builder
+
+      - name: Build against main and push
+        uses: docker/build-push-action@v4
+        with:
+          builder: ${{ steps.main.outputs.name }}
+          file: ${{ env.DOCKERFILE }}
+          target: main
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:v${{ steps.version.outputs.current-version}}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:v${{ steps.version.outputs.current-version}}_sha-${{ steps.git.outputs.short_sha }}
+          push: true
+
+
+
