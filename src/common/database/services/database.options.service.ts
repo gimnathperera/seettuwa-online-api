@@ -5,6 +5,16 @@ import { ConfigService } from '@nestjs/config';
 import { IDatabaseOptionsService } from 'src/common/database/interfaces/database.options-service.interface';
 import { ENUM_APP_ENVIRONMENT } from 'src/app/constants/app.enum.constant';
 
+const generateMongoSRVUri = (
+    host: string,
+    database: string,
+    user: string,
+    password: string,
+    options: string
+): string => {
+    return `mongodb+srv://${user}:${password}@${host}/${database}${options}`;
+};
+
 @Injectable()
 export class DatabaseOptionsService implements IDatabaseOptionsService {
     constructor(private readonly configService: ConfigService) {}
@@ -21,32 +31,23 @@ export class DatabaseOptionsService implements IDatabaseOptionsService {
             ? `?${this.configService.get<string>('database.options')}`
             : '';
 
-        let uri = `${host}`;
-
-        if (database) {
-            uri = `${uri}/${database}${options}`;
-        }
-
         if (env !== ENUM_APP_ENVIRONMENT.PRODUCTION) {
             mongoose.set('debug', debug);
         }
 
         const mongooseOptions: MongooseModuleOptions = {
-            uri,
+            uri: generateMongoSRVUri(host, database, user, password, options),
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
             autoCreate: true,
-            // useMongoClient: true,
         };
-
         if (user && password) {
             mongooseOptions.auth = {
                 username: user,
                 password: password,
             };
         }
-
         return mongooseOptions;
     }
 }
