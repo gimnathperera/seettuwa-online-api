@@ -2,7 +2,7 @@
   "name": "api",
   "version": "0.1",
   "description": "api for seettuwa-online",
-  "repository": "",
+  "repository": "https://github.com/Gimnath-Perera/seettuwa-online-api",
   "private": true,
   "license": "MIT",
   "scripts": {
