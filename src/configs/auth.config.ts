@@ -31,7 +31,7 @@ export default registerAs(
 
         subject: process.env.AUTH_JWT_SUBJECT ?? 'ackDevelopment',
         audience: process.env.AUTH_JWT_AUDIENCE ?? 'https://example.com',
-        issuer: process.env.AUTH_JWT_ISSUER ?? 'ack',
+        issuer: process.env.AUTH_JWT_ISSUER ?? 'seettuwa',
         prefixAuthorization: 'Bearer',
         payloadEncryption:
             process.env.AUTH_JWT_PAYLOAD_ENCRYPT === 'true' ? true : false,

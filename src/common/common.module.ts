@@ -70,7 +70,7 @@ import { PolicyModule } from 'src/common/policy/policy.module';
                 DATABASE_HOST: Joi.string()
                     .default('mongodb://localhost:27017')
                     .required(),
-                DATABASE_NAME: Joi.string().default('ack').required(),
+                DATABASE_NAME: Joi.string().default('seettuwa').required(),
                 DATABASE_USER: Joi.string().allow(null, '').optional(),
                 DATABASE_PASSWORD: Joi.string().allow(null, '').optional(),
                 DATABASE_DEBUG: Joi.boolean().default(false).required(),
