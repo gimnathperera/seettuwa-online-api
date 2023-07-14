@@ -81,5 +81,3 @@ jobs:
 
             - name: Unit Test
               run: yarn test
-              env:
-                  CI: true
