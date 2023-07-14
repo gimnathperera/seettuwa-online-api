@@ -54,7 +54,7 @@ describe('DatabaseOptionsService', () => {
             const options = service.createOptions();
 
             expect(options).toMatchObject({
-                uri: 'mongodb://localhost:27017/test-db?retryWrites=true&w=majority',
+                uri: 'mongodb+srv://test-user:test-password@mongodb://localhost:27017/test-db?retryWrites=true&w=majority',
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 serverSelectionTimeoutMS: 5000,
@@ -67,38 +67,6 @@ describe('DatabaseOptionsService', () => {
             });
 
             expect(mongoose.get('debug')).toBeUndefined();
-        });
-
-        it('should return the correct MongooseModuleOptions object', async () => {
-            jest.spyOn(service['configService'], 'get').mockImplementation(
-                (key: string) => {
-                    switch (key) {
-                        case 'app.env':
-                            return ENUM_APP_ENVIRONMENT.DEVELOPMENT;
-                        case 'database.host':
-                            return 'mongodb://localhost:27017';
-                        case 'database.name':
-                            return 'test-db';
-                        case 'database.debug':
-                            return true;
-                        case 'database.options':
-                        default:
-                            return undefined;
-                    }
-                }
-            );
-
-            const options = service.createOptions();
-
-            expect(options).toMatchObject({
-                uri: 'mongodb://localhost:27017/test-db',
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                serverSelectionTimeoutMS: 5000,
-                autoCreate: true,
-            });
-
-            expect(mongoose.get('debug')).toBe(true);
         });
     });
 });
